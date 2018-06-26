@@ -20,6 +20,7 @@ namespace A04Examples
 
 		void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
+            Vector2 currpoint = eventData.position;
             PlayerController.Instance.MoveToPosition(transform.position, RequiredMovingTime);
         }
 

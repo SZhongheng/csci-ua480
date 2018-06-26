@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace A03Examples
+namespace A03zs967
 {
     /***
      * PickupMe component allows user to select this object and 
@@ -11,6 +11,7 @@ namespace A03Examples
     public class PickupMe : MonoBehaviour
     {
         public bool grabbed = false;  // have i been picked up, or not?
+        public bool touched = false;
         Rigidbody myRb;
         StrobeSelected strobe;
         public DrawDownPointer downPointer;
@@ -29,9 +30,11 @@ namespace A03Examples
             {
                 downPointer.DrawLine(transform.position);
             }
-            if (grabbed && transform.position.y < 0.5f)
+            if (grabbed && transform.parent.position.y < 1.59)
             {
-                myRb.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
+                transform.position = new Vector3(transform.position.x, 0.55f, transform.position.y);
+
+
             }
         }
 
@@ -45,28 +48,25 @@ namespace A03Examples
             if (grabbed)
             {  // now drop it
                 transform.parent = null;  // release the object
-                grabbed = false;
                 myRb.isKinematic = false;  //    .useGravity = true;
+                grabbed = false;
+                touched = false;
                 strobe.trigger = false;
                 if (downPointer != null)
                     downPointer.DontDraw();
             }
+
             else
             {   // pick it up:
                 // make it move with gaze, keeping same distance from camera
                 transform.parent = Camera.main.transform;  // attach object to camera
                 grabbed = true;
                 strobe.trigger = true;   // turn on color strobe so we know we have it
-                myRb.isKinematic = true; //  .useGravity = false;
+                myRb.isKinematic = true;
+
 
             }
-        }
-        private void OnCollisionEnter(Collision collision)
-        {
-            if (collision.gameObject.tag == "Plane"){
-                myRb.velocity = Vector3.zero;
-            }
-        }
 
+        }
     }
 }
