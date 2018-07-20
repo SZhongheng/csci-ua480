@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace A04zs967
+namespace A04Examples
 {
     [RequireComponent(typeof(Collider))]
     public class MovingDestination : MonoBehaviour, IPointerClickHandler
@@ -20,7 +20,11 @@ namespace A04zs967
 
 		void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
-            PlayerController.Instance.MoveToPosition(transform.position, RequiredMovingTime);
+            //if where you're looking at is lesser than 10 units away from your current position
+            if (Vector3.Magnitude(eventData.pointerPressRaycast.worldPosition - Camera.main.transform.position) <= 10)
+            {
+                PlayerController.Instance.MoveToPosition(eventData.pointerPressRaycast.worldPosition, RequiredMovingTime);
+            }
         }
 
 		private void OnTriggerEnter(Collider other)
